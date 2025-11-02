@@ -7,13 +7,14 @@ from pyrogram import filters
 load_dotenv()
 
 # ── Core bot config ────────────────────────────────────────────────────────────
-API_ID = 27798659
-API_HASH = 26100c77cee02e5e34b2bbee58440f86
-BOT_TOKEN = 
-OWNER_ID = 
-OWNER_USERNAME = getenv("OWNER_USERNAME", "CertifiedCoder")
-BOT_USERNAME = getenv("BOT_USERNAME", "AnnieXRobot")
-BOT_NAME = getenv("BOT_NAME", "˹𝐀ɴɴɪᴇ ✘ 𝙼ᴜsɪᴄ˼ ♪")
+API_ID = int(getenv("API_ID", 22627587))
+API_HASH = getenv("API_HASH", "4f664b2a2bf3b095a689a51780a45a5e")
+BOT_TOKEN = getenv("BOT_TOKEN")
+
+OWNER_ID = int(getenv("OWNER_ID", 5968801459))
+OWNER_USERNAME = getenv("OWNER_USERNAME", "Dhairya_bh")
+BOT_USERNAME = getenv("BOT_USERNAME", "Dhairya_music_2bot")
+BOT_NAME = getenv("BOT_NAME", "˹𝑫𝒉𝒂𝒊𝒓𝒚𝒂 𝑿 𝑴𝒖𝒔𝒊𝒄 2˼ ♪")
 ASSUSERNAME = getenv("ASSUSERNAME", "musicxannie")
 
 # ── Database & logging ─────────────────────────────────────────────────────────
