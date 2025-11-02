@@ -4,12 +4,11 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-# Install git and other dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git ffmpeg build-essential libssl-dev && \
     pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir --upgrade -r requirements.txt && \
-    apt-get purge -y build-essential libssl-dev && \  # remove heavy build tools, but keep git
+    pip install --no-cache-dir -r requirements.txt && \
+    apt-get purge -y build-essential libssl-dev && \   # ✅ remove dev tools, keep git & ffmpeg
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
