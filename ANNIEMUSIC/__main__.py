@@ -75,4 +75,20 @@ async def init():
 
 
 if __name__ == "__main__":
+    import threading, os
+    from flask import Flask
+
+    def start_keepalive_server():
+        app = Flask(__name__)
+
+        @app.route('/')
+        def home():
+            return "Annie Music Bot is running!", 200
+
+        port = int(os.environ.get("PORT", 8080))
+        app.run(host="0.0.0.0", port=port)
+
+    # Start the HTTP server in a background thread
+    threading.Thread(target=start_keepalive_server, daemon=True).start()
+
     asyncio.get_event_loop().run_until_complete(init())
