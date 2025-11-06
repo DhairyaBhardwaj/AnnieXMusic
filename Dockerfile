@@ -2,17 +2,23 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
+# Copy dependencies first (for layer caching)
 COPY requirements.txt .
 
+# Install dependencies and libraries
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git ffmpeg build-essential libssl-dev && \
+    apt-get install -y --no-install-recommends \
+        git \
+        ffmpeg \
+        libgl1 \
+        libglib2.0-0 \
+        && \
     pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \
-    # remove only dev tools, keep git & ffmpeg
-    apt-get purge -y build-essential libssl-dev && \
-    apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
+# Copy the entire project
 COPY . .
 
+# Start the bot
 CMD ["python3", "-m", "ANNIEMUSIC"]
