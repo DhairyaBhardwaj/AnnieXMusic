@@ -12,6 +12,9 @@ RUN apt-get update && \
         ffmpeg \
         libgl1 \
         libglib2.0-0 \
+        libsm6 \
+        libxext6 \
+        libxrender-dev \
         && \
     pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \
