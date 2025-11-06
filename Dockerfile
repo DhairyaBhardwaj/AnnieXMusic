@@ -21,4 +21,4 @@ RUN apt-get update && \
 COPY . .
 
 # Start the bot
-CMD ["python3", "-m", "ANNIEMUSIC"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "ANNIEMUSIC.__main__:app"]
