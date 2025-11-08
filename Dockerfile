@@ -1,18 +1,19 @@
-# ---------- Base image ----------
+# ---------- Base Image ----------
 FROM python:3.12-slim
 
-# ---------- Set environment variables ----------
+# ---------- Environment Settings ----------
 ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
-    DEBIAN_FRONTEND=noninteractive
+    DEBIAN_FRONTEND=noninteractive \
+    PORT=8080
 
-# ---------- Set working directory ----------
+# ---------- Set Working Directory ----------
 WORKDIR /app
 
-# ---------- Copy files ----------
+# ---------- Copy Project Files ----------
 COPY . .
 
-# ---------- Install required system packages ----------
+# ---------- Install System Dependencies ----------
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         git \
@@ -28,9 +29,8 @@ RUN apt-get update && \
     pip install --no-cache-dir -r requirements.txt && \
     rm -rf /var/lib/apt/lists/*
 
-# ---------- Optional: Pre-install prebuilt tgcrypto wheel ----------
-# (This skips compiling tgcrypto from source)
-# RUN pip install --no-cache-dir tgcrypto==1.2.5 --only-binary=:all:
+# ---------- Health Check ----------
+HEALTHCHECK CMD curl --fail http://localhost:$PORT || exit 1
 
-# ---------- Default command ----------
-CMD ["python3", "main.py"]
+# ---------- Default Command ----------
+CMD ["python3", "-m", "ANNIEMUSIC"]
