@@ -25,13 +25,11 @@ async def init():
         LOGGER(__name__).error("ᴀssɪsᴛᴀɴᴛ sᴇssɪᴏɴ ɴᴏᴛ ғɪʟʟᴇᴅ, ᴘʟᴇᴀsᴇ ғɪʟʟ ᴀ ᴘʏʀᴏɢʀᴀᴍ sᴇssɪᴏɴ...")
         exit()
 
-    # ✅ Try to fetch cookies at startup
     try:
         await fetch_and_store_cookies()
         LOGGER("ANNIEMUSIC").info("ʏᴏᴜᴛᴜʙᴇ ᴄᴏᴏᴋɪᴇs ʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ✅")
     except Exception as e:
         LOGGER("ANNIEMUSIC").warning(f"⚠️ᴄᴏᴏᴋɪᴇ ᴇʀʀᴏʀ: {e}")
-
 
     await sudo()
 
@@ -78,26 +76,27 @@ if __name__ == "__main__":
     import os
     from flask import Flask
     import threading
-    import asyncio
     import time
 
-    app = Flask(__name__)
+    # Define Flask app
+    web_app = Flask(__name__)
 
-    @app.route('/')
+    @web_app.route('/')
     def home():
         return "Annie Music Bot is running!", 200
 
-    # Start Flask normally (not inside asyncio)
+    # Run Flask server immediately
     def run_flask():
         port = int(os.environ.get("PORT", 8080))
         print(f"🌐 Flask keepalive running on port {port}")
-        app.run(host="0.0.0.0", port=port)
+        web_app.run(host="0.0.0.0", port=port)
 
-    # ✅ Start Flask in the main thread immediately
-    threading.Thread(target=run_flask, daemon=True).start()
+    # Start Flask right away
+    flask_thread = threading.Thread(target=run_flask)
+    flask_thread.start()
 
-    # ✅ Wait briefly to ensure Render port detection
+    # Wait a few seconds so Render can detect the port
     time.sleep(5)
 
-    # ✅ Now launch bot async tasks
-    asyncio.run(init())
+    # Then start your async bot logic
+    asyncio.get_event_loop().run_until_complete(init())
