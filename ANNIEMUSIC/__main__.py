@@ -75,8 +75,8 @@ async def init():
 if __name__ == "__main__":
     import os
     import threading
-    from flask import Flask
     import asyncio
+    from flask import Flask
 
     web_app = Flask(__name__)
 
@@ -90,10 +90,10 @@ if __name__ == "__main__":
     def start_bot():
         asyncio.run(run_bot())
 
-    # Start the bot in a background thread
+    # Start your bot in the background
     threading.Thread(target=start_bot, daemon=True).start()
 
-    # Run Flask in the main thread so Render detects the port
+    # Run Flask in the main thread (Render requires the HTTP server to be here)
     port = int(os.environ.get("PORT", 8080))
     print(f"🌐 Flask keepalive running on port {port}")
     web_app.run(host="0.0.0.0", port=port)
