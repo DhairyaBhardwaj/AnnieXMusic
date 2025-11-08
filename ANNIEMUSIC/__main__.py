@@ -74,29 +74,26 @@ async def init():
 
 if __name__ == "__main__":
     import os
-    from flask import Flask
     import threading
-    import time
+    from flask import Flask
+    import asyncio
 
-    # Define Flask app
     web_app = Flask(__name__)
 
     @web_app.route('/')
     def home():
         return "Annie Music Bot is running!", 200
 
-    # Run Flask server immediately
-    def run_flask():
-        port = int(os.environ.get("PORT", 8080))
-        print(f"🌐 Flask keepalive running on port {port}")
-        web_app.run(host="0.0.0.0", port=port)
+    async def run_bot():
+        await init()
 
-    # Start Flask right away
-    flask_thread = threading.Thread(target=run_flask)
-    flask_thread.start()
+    def start_bot():
+        asyncio.run(run_bot())
 
-    # Wait a few seconds so Render can detect the port
-    time.sleep(5)
+    # Start the bot in a background thread
+    threading.Thread(target=start_bot, daemon=True).start()
 
-    # Then start your async bot logic
-    asyncio.get_event_loop().run_until_complete(init())
+    # Run Flask in the main thread so Render detects the port
+    port = int(os.environ.get("PORT", 8080))
+    print(f"🌐 Flask keepalive running on port {port}")
+    web_app.run(host="0.0.0.0", port=port)
