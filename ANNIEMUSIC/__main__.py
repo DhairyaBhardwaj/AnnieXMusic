@@ -75,7 +75,7 @@ async def init():
 
 
 if __name__ == "__main__":
-    import threading, os
+    import threading, os, time
     from flask import Flask
 
     def start_keepalive_server():
@@ -86,9 +86,15 @@ if __name__ == "__main__":
             return "Annie Music Bot is running!", 200
 
         port = int(os.environ.get("PORT", 8080))
+        print(f"🌐 Starting keepalive server on port {port}...")
         app.run(host="0.0.0.0", port=port)
 
-    # Start the HTTP server in a background thread
-    threading.Thread(target=start_keepalive_server, daemon=True).start()
+    # ✅ Start Flask *first* in a separate thread
+    flask_thread = threading.Thread(target=start_keepalive_server, daemon=True)
+    flask_thread.start()
 
+    # ✅ Wait a bit to ensure Render sees the open port before bot starts
+    time.sleep(3)
+
+    # ✅ Then start your bot async init
     asyncio.get_event_loop().run_until_complete(init())
